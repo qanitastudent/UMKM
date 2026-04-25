@@ -1,14 +1,43 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 export default function HeroSection() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+
+    check();
+    window.addEventListener("resize", check);
+
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const { scrollY } = useScroll();
+
+  const rawX = useTransform(
+    scrollY,
+    [0, 1400],
+    isMobile ? [0, 0] : isTablet ? [0, -180] : [0, -500],
+  );
+  const x = useSpring(rawX, {
+    stiffness: 70,
+    damping: 18,
+  });
+  const opacity = useTransform(scrollY, [0, 800], [1, 0]);
+
   return (
     <section
       id="hero"
-      className="relative overflow-hidden bg-[#f8f5ef] pt-28 lg:pt-0 lg:max-h-screen"
+      className="relative overflow-hidden bg-[#f8f5ef] pt-28 lg:pt-0 lg:max-h-screen overflow-hidden"
     >
       <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center lg:items-end lg:pb-35 gap-12 px-6 lg:grid-cols-2">
         {/* LEFT */}
@@ -39,11 +68,12 @@ export default function HeroSection() {
             </Button>
           </div>
 
-          {/* Ground Meat */}
+          {/* Cheesee */}
           <motion.div
+            style={{ x, opacity }}
             animate={{ y: [0, 12, 0] }}
             transition={{ repeat: Infinity, duration: 5 }}
-            className="absolute top-30 right-0 rotate-5 lg:-top-35 lg:-left-15"
+            className="absolute top-20 -right-20 rotate-5 md:right-0 lg:-top-35 lg:-left-15"
           >
             <Image
               src="/assets/cheese.svg"
@@ -59,7 +89,7 @@ export default function HeroSection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.45 }}
           className="relative"
         >
           <div className="relative mx-auto aspect-square w-full max-w-145">
