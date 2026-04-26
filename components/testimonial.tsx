@@ -64,7 +64,7 @@ export default function TestimonialSection() {
           className="pointer-events-none absolute bottom-0 right-0"
         >
           <Image
-            src="/assets/tomato2.svg"
+            src="/assets/egg.svg"
             alt=""
             width={90}
             height={90}

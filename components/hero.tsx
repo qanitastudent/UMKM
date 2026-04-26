@@ -37,7 +37,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden bg-[#f8f5ef] pt-28 lg:pt-0 lg:max-h-screen overflow-hidden"
+      className="relative bg-[#f8f5ef] pt-28 lg:pt-0 lg:max-h-screen overflow-hidden"
     >
       <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center lg:items-end lg:pb-35 gap-12 px-6 lg:grid-cols-2">
         {/* LEFT */}
@@ -95,10 +95,12 @@ export default function HeroSection() {
           <div className="relative mx-auto aspect-square w-full max-w-145">
             <Image
               src="/assets/Lasagna.svg"
-              alt="https://pin.it/4PCLFMDPp"
+              alt="Lasagna Pasta"
               fill
               priority
-              className="object-contain drop-shadow-2xl"
+              loading="eager"
+              sizes="(max-width: 768px) 90vw, 50vw"
+              className="object-contain"
             />
 
             {/* Floating tomato */}

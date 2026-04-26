@@ -1,21 +1,60 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ContactSection() {
   const [sent, setSent] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+
+    check();
+    window.addEventListener("resize", check);
+
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const { scrollY } = useScroll();
+
+  const rawLeftX = useTransform(
+    scrollY,
+    [0, 450],
+    isMobile ? [0, 0] : isTablet ? [-80, 0] : [-240, 0],
+  );
+
+  const rawRightX = useTransform(
+    scrollY,
+    [0, 500],
+    isMobile ? [0, 0] : isTablet ? [60, 0] : [180, 0],
+  );
+
+  const leftX = useSpring(rawLeftX, {
+    stiffness: 70,
+    damping: 18,
+  });
+
+  const rightX = useSpring(rawRightX, {
+    stiffness: 70,
+    damping: 18,
+  });
+
+  const opacity = useTransform(scrollY, [0, 500], [0, 1]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // sementara dummy success
     setSent(true);
 
     setTimeout(() => {
       setSent(false);
-    }, 3000);
+    }, 4000);
   };
 
   return (
@@ -23,39 +62,41 @@ export default function ContactSection() {
       id="contact"
       className="relative overflow-hidden bg-[#f8f5ef] py-24"
     >
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="relative mx-auto max-w-5xl px-6">
         {/* dekor kiri */}
         <motion.div
+          style={{ x: leftX, opacity }}
           animate={{ y: [0, 12, 0], rotate: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 6 }}
-          className="absolute left-4 top-12"
+          className="absolute left-4 top-12 z-10"
         >
           <Image
             src="/assets/tomato2.svg"
             alt=""
             width={70}
             height={70}
-            className="w-12 md:w-16 opacity-70"
+            className="h-auto w-12 opacity-70 md:w-16 lg:w-20"
           />
         </motion.div>
 
         {/* dekor kanan */}
         <motion.div
+          style={{ x: rightX, opacity }}
           animate={{ y: [0, -12, 0], rotate: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 5 }}
-          className="absolute right-4 bottom-12"
+          className="absolute bottom-0 -right-20 z-10"
         >
           <Image
             src="/assets/parsley.svg"
             alt=""
             width={70}
             height={70}
-            className="w-12 md:w-16 opacity-70"
+            className="h-auto w-12 opacity-70 md:w-16 lg:w-30"
           />
         </motion.div>
 
         {/* Card */}
-        <div className="rounded-[36px] bg-white px-6 py-14 shadow-sm ring-1 ring-black/5 md:px-14">
+        <div className="relative rounded-[36px] bg-white px-6 py-14 shadow-sm ring-1 ring-black/5 md:px-14">
           <div className="text-center">
             <p className="text-sm uppercase tracking-[0.35em] text-neutral-500">
               Contact Us
@@ -65,7 +106,7 @@ export default function ContactSection() {
               Fresh updates to your inbox
             </h2>
 
-            <p className="mx-auto mt-5 max-w-2xl text-neutral-600 leading-relaxed">
+            <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-neutral-600">
               Have questions, reservations, or special requests? Send us a
               message and let’s create something delicious together.
             </p>
@@ -96,7 +137,7 @@ export default function ContactSection() {
               placeholder="Your Message"
               required
               rows={5}
-              className="w-full rounded-3xl border border-black/10 px-6 py-4 outline-none transition focus:border-orange-500 resize-none"
+              className="w-full resize-none rounded-3xl border border-black/10 px-6 py-4 outline-none transition focus:border-orange-500"
             />
 
             <div className="text-center">
