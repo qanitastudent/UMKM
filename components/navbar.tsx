@@ -59,7 +59,7 @@ export default function Navbar() {
         {/* Mobile menu button */}
         <div className="md:hidden">
           <DropdownMenu>
-            <DropdownMenuTrigger className="cursor-pointer">
+            <DropdownMenuTrigger className="cursor-pointer px-auto">
               <div className="cursor-pointer">
                 <Menu className="w-7 h-7" />
               </div>
