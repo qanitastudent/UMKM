@@ -17,35 +17,106 @@ export default function HeroSection() {
 
     check();
     window.addEventListener("resize", check);
-
     return () => window.removeEventListener("resize", check);
   }, []);
 
   const { scrollY } = useScroll();
 
-  const rawX = useTransform(
+  const rawXLeft = useTransform(
     scrollY,
     [0, 1400],
-    isMobile ? [0, 0] : isTablet ? [0, -180] : [0, -500],
+    isMobile ? [0, 0] : isTablet ? [0, -140] : [0, -260],
   );
-  const x = useSpring(rawX, {
+
+  const rawXRight = useTransform(
+    scrollY,
+    [0, 1400],
+    isMobile ? [0, 0] : isTablet ? [0, 140] : [0, 260],
+  );
+
+  const xLeft = useSpring(rawXLeft, {
     stiffness: 70,
     damping: 18,
   });
-  const opacity = useTransform(scrollY, [0, 800], [1, 0]);
+
+  const xRight = useSpring(rawXRight, {
+    stiffness: 70,
+    damping: 18,
+  });
+
+  /* decor parallax only */
+  const topParallax = useTransform(scrollY, [0, 800], [0, -35]);
+  const midParallax = useTransform(scrollY, [0, 800], [0, -55]);
+  const deepParallax = useTransform(scrollY, [0, 800], [0, -90]);
 
   return (
     <section
       id="hero"
-      className="relative bg-[#f8f5ef] pt-28 lg:pt-0 lg:max-h-screen overflow-hidden"
+      className="relative overflow-hidden bg-[#f8f5ef] pt-18 md:pt-24 lg:pt-0 lg:max-h-screen"
     >
-      <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center lg:items-end lg:pb-35 gap-12 px-6 lg:grid-cols-2">
-        {/* LEFT */}
+      {/* DECOR 1 : top left */}
+      <motion.div
+        style={{ y: topParallax }}
+        className="pointer-events-none absolute left-0 top-8 -z-10 opacity-75"
+      >
+        <Image
+          src="/assets/tomato2.svg"
+          alt="Tomato"
+          width={90}
+          height={90}
+          className="h-auto w-12 md:w-14"
+        />
+      </motion.div>
+
+      {/* DECOR 2 : extra left corner */}
+      <motion.div
+        style={{ y: midParallax }}
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 5 }}
+        className="pointer-events-none absolute bottom-18 left-0 -z-10 opacity-70"
+      >
+        <Image
+          src="/assets/parsley.svg"
+          alt="Parsley"
+          width={130}
+          height={130}
+          className="h-auto w-16 md:w-18"
+        />
+      </motion.div>
+
+      {/* DECOR 4 : bottom right */}
+      <motion.div
+        style={{ x: xLeft, y: deepParallax }}
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.45 }}
+        className="pointer-events-none absolute bottom-8 right-0 top-20 opacity-75 md:top-0 md:left-0"
+      >
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{
+            repeat: Infinity,
+            duration: 4,
+            ease: "easeInOut",
+          }}
+        >
+          <Image
+            src="/assets/cheese.svg"
+            alt="Cheese"
+            width={210}
+            height={210}
+            className="h-auto w-22 md:w-34 rotate-20"
+          />
+        </motion.div>
+      </motion.div>
+
+      <div className="relative z-10 mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-2 lg:items-center">
+        {/* LEFT CONTENT STATIC */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative"
+          className="relative flex min-h-[420px] flex-col justify-center"
         >
           <p className="mb-4 text-sm uppercase tracking-[0.35em] text-neutral-500">
             Delicious
@@ -67,26 +138,11 @@ export default function HeroSection() {
               Explore Menu
             </Button>
           </div>
-
-          {/* Cheesee */}
-          <motion.div
-            style={{ x, opacity }}
-            animate={{ y: [0, 12, 0] }}
-            transition={{ repeat: Infinity, duration: 5 }}
-            className="absolute top-20 -right-20 rotate-5 md:right-0 lg:-top-35 lg:-left-15"
-          >
-            <Image
-              src="/assets/cheese.svg"
-              alt="https://pin.it/2UjYSL02G"
-              width={200}
-              height={200}
-              className="w-25 h-auto md:w-25 lg:w-25"
-            />
-          </motion.div>
         </motion.div>
 
         {/* RIGHT */}
         <motion.div
+          style={{ y: deepParallax }}
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45 }}
@@ -103,33 +159,49 @@ export default function HeroSection() {
               className="object-contain"
             />
 
-            {/* Floating tomato */}
+            {/* DECOR 3 : cheese visible */}
             <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ repeat: Infinity, duration: 4 }}
-              className="absolute right-0 top-15"
+              style={{ x: xLeft, y: topParallax }}
+              animate={{ rotate: [6, 10, 6] }}
+              transition={{ repeat: Infinity, duration: 6 }}
+              className="pointer-events-none absolute hidden -left-10 top-0 md:block md:right-8 md:left-0 md:top-10"
             >
               <Image
-                src="/assets/tomato2.svg"
-                alt="https://pin.it/4PCLFMDPp"
-                width={100}
-                height={200}
-                className="w-20 h-auto md:w-20 lg:w-20"
+                src="/assets/sauce.svg"
+                alt="Cheese"
+                width={270}
+                height={270}
+                className="h-auto w-25 md:w-32"
               />
             </motion.div>
 
-            {/* Floating basil */}
             <motion.div
+              style={{ x: xRight }}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 4 }}
+              className="pointer-events-none absolute -right-10 md:right-0 top-15"
+            >
+              <Image
+                src="/assets/tomato2.svg"
+                alt="Tomato"
+                width={100}
+                height={200}
+                className="h-auto w-20"
+              />
+            </motion.div>
+
+            <motion.div
+              style={{ x: xRight }}
               animate={{ y: [0, 12, 0] }}
               transition={{ repeat: Infinity, duration: 5 }}
-              className="absolute bottom-5 left-0"
+              className="pointer-events-none absolute bottom-5 -left-10"
             >
               <Image
                 src="/assets/parsley.svg"
-                alt="https://pin.it/2UjYSL02G"
+                alt="Parsley"
                 width={200}
                 height={200}
-                className="w-25 h-auto md:w-25 lg:w-35"
+                className="h-auto w-25 lg:w-35"
               />
             </motion.div>
           </div>

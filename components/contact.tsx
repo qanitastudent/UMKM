@@ -2,12 +2,14 @@
 
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function ContactSection() {
   const [sent, setSent] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const check = () => {
@@ -21,31 +23,37 @@ export default function ContactSection() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const { scrollY } = useScroll();
+  /* scroll berdasarkan section contact */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
 
+  /* kiri masuk kiri -> kanan */
   const rawLeftX = useTransform(
-    scrollY,
-    [0, 450],
-    isMobile ? [0, 0] : isTablet ? [-80, 0] : [-240, 0],
+    scrollYProgress,
+    [0, 1],
+    isMobile ? [0, 0] : isTablet ? [-90, 20] : [-240, 40],
   );
 
+  /* kanan masuk kanan -> kiri */
   const rawRightX = useTransform(
-    scrollY,
-    [0, 500],
-    isMobile ? [0, 0] : isTablet ? [60, 0] : [180, 0],
+    scrollYProgress,
+    [0, 1],
+    isMobile ? [0, 0] : isTablet ? [90, -20] : [240, -40],
   );
 
   const leftX = useSpring(rawLeftX, {
-    stiffness: 70,
+    stiffness: 65,
     damping: 18,
   });
 
   const rightX = useSpring(rawRightX, {
-    stiffness: 70,
+    stiffness: 65,
     damping: 18,
   });
 
-  const opacity = useTransform(scrollY, [0, 500], [0, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.25], [0.35, 1]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,44 +67,78 @@ export default function ContactSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="contact"
-      className="relative overflow-hidden bg-[#f8f5ef] py-24"
+      className="relative overflow-hidden bg-[#f8f5ef] py-24 md:pb-5"
     >
       <div className="relative mx-auto max-w-5xl px-6">
-        {/* dekor kiri */}
+        {/* DECOR AROUND CARD */}
+        {/* kiri atas */}
         <motion.div
           style={{ x: leftX, opacity }}
-          animate={{ y: [0, 12, 0], rotate: [0, 6, 0] }}
+          animate={{ y: [0, 12, 0], rotate: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 6 }}
-          className="absolute left-4 top-12 z-10"
+          className="pointer-events-none absolute -left-14 top-8 z-0"
         >
           <Image
-            src="/assets/tomato2.svg"
+            src="/assets/butter.svg"
             alt=""
-            width={70}
-            height={70}
-            className="h-auto w-12 opacity-70 md:w-16 lg:w-20"
+            width={90}
+            height={90}
+            className="w-14 opacity-80 md:w-28"
           />
         </motion.div>
 
-        {/* dekor kanan */}
+        {/* kiri bawah */}
+        <motion.div
+          style={{ x: leftX, opacity }}
+          animate={{ y: [0, -10, 0], rotate: [0, -8, 0] }}
+          transition={{ repeat: Infinity, duration: 6.4 }}
+          className="pointer-events-none absolute -left-16 bottom-12 z-0"
+        >
+          <Image
+            src="/assets/cinnamon.svg"
+            alt=""
+            width={110}
+            height={110}
+            className="w-16 opacity-80 md:w-34"
+          />
+        </motion.div>
+
+        {/* kanan atas */}
         <motion.div
           style={{ x: rightX, opacity }}
-          animate={{ y: [0, -12, 0], rotate: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 5 }}
-          className="absolute bottom-0 -right-20 z-10"
+          animate={{ y: [0, -12, 0], rotate: [0, -8, 0] }}
+          transition={{ repeat: Infinity, duration: 5.2 }}
+          className="pointer-events-none absolute -right-12 top-10 z-0"
         >
           <Image
-            src="/assets/parsley.svg"
+            src="/assets/caramel.svg"
             alt=""
-            width={70}
-            height={70}
-            className="h-auto w-12 opacity-70 md:w-16 lg:w-30"
+            width={110}
+            height={110}
+            className="w-16 opacity-80 md:w-24"
           />
         </motion.div>
 
-        {/* Card */}
-        <div className="relative rounded-[36px] bg-white px-6 py-14 shadow-sm ring-1 ring-black/5 md:px-14">
+        {/* kanan bawah */}
+        <motion.div
+          style={{ x: rightX, opacity }}
+          animate={{ y: [0, 10, 0], rotate: [0, 7, 0] }}
+          transition={{ repeat: Infinity, duration: 5.8 }}
+          className="pointer-events-none absolute -right-14 bottom-8 z-0"
+        >
+          <Image
+            src="/assets/chili.svg"
+            alt=""
+            width={95}
+            height={95}
+            className="w-14 opacity-80 md:w-28"
+          />
+        </motion.div>
+
+        {/* CARD */}
+        <div className="relative z-10 rounded-[36px] bg-white px-6 py-14 shadow-sm ring-1 ring-black/5 md:px-14">
           <div className="text-center">
             <p className="text-sm uppercase tracking-[0.35em] text-neutral-500">
               Contact Us

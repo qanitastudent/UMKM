@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -15,17 +15,17 @@ const data = {
     {
       name: "Lasagna",
       image: "/assets/Lasagna.svg",
-      desc: "Layers of fresh pasta, rich meat sauce, and melted cheese baked to perfection. Warm, savory, and deeply satisfying in every bite. A comforting favorite you will want to enjoy again.",
+      desc: "Layers of fresh pasta, rich meat sauce, and melted cheese baked to perfection.",
     },
     {
       name: "Macaroni Schotel",
       image: "/assets/macaroni.svg",
-      desc: "Creamy baked macaroni blended with cheese and flavorful toppings. Soft, rich, and perfectly golden on top. Try this classic dish made to brighten your meal.",
+      desc: "Creamy baked macaroni blended with cheese and flavorful toppings.",
     },
     {
       name: "Spaghetti Brulee",
       image: "/assets/spaghetti.svg",
-      desc: "Tender spaghetti finished with creamy sauce and caramelized cheese topping. A unique balance of savory and indulgent flavors. Taste something special crafted for your cravings.",
+      desc: "Tender spaghetti finished with creamy sauce and caramelized cheese topping.",
     },
   ],
 
@@ -33,17 +33,17 @@ const data = {
     {
       name: "Tiramisu",
       image: "/assets/tiramisu.svg",
-      desc: "Soft layers of cream and coffee-soaked sponge in every spoonful. Light, smooth, and irresistibly elegant. End your meal with this timeless Italian delight.",
+      desc: "Soft layers of cream and coffee-soaked sponge in every spoonful.",
     },
     {
       name: "Creme Brulee",
       image: "/assets/brulee.svg",
-      desc: "Silky vanilla custard topped with crisp caramelized sugar. Crack the golden surface and enjoy the creamy center. A luxurious dessert made to impress.",
+      desc: "Silky vanilla custard topped with crisp caramelized sugar.",
     },
     {
       name: "Panna Cotta",
       image: "/assets/panna.svg",
-      desc: "Delicate cream dessert with a smooth and silky texture. Light sweetness that melts beautifully on the tongue. A refreshing finish to any dining moment.",
+      desc: "Delicate cream dessert with a smooth and silky texture.",
     },
   ],
 
@@ -51,19 +51,34 @@ const data = {
     {
       name: "Latte",
       image: "/assets/latte.svg",
-      desc: "Smooth espresso blended with perfectly steamed milk. Rich aroma and comforting warmth in every sip. The perfect companion for any time of day.",
+      desc: "Smooth espresso blended with perfectly steamed milk.",
     },
     {
       name: "Mojito",
       image: "/assets/mojito.svg",
-      desc: "Fresh mint, citrus, and sparkling flavors combined beautifully. Cool, lively, and instantly refreshing. A bright drink made to lift your mood.",
+      desc: "Fresh mint, citrus, and sparkling flavors combined beautifully.",
     },
     {
       name: "Lemon Tea",
       image: "/assets/tea.svg",
-      desc: "Refreshing tea infused with zesty lemon notes. Light, crisp, and wonderfully balanced. Enjoy a calming sip with every meal.",
+      desc: "Refreshing tea infused with zesty lemon notes.",
     },
   ],
+};
+
+const decorMap = {
+  pasta: {
+    left: "/assets/tomatosplash.svg",
+    right: "/assets/pasta2.svg",
+  },
+  dessert: {
+    left: "/assets/choco.svg",
+    right: "/assets/dcr2.svg",
+  },
+  drink: {
+    left: "/assets/matcha.svg",
+    right: "/assets/dcr3.svg",
+  },
 };
 
 export default function MenuSection() {
@@ -88,7 +103,6 @@ export default function MenuSection() {
 
     check();
     window.addEventListener("resize", check);
-
     return () => window.removeEventListener("resize", check);
   }, []);
 
@@ -118,54 +132,109 @@ export default function MenuSection() {
 
   const opacity = useTransform(scrollY, [0, 500], [0, 1]);
 
+  const decor = decorMap[active];
+
+  /* =========================
+   ADD THESE STATES
+========================= */
+
+  const [mobileIndex, setMobileIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /* reset when category changes */
+  useEffect(() => {
+    if (!isMobile || paused) return;
+
+    intervalRef.current = setInterval(() => {
+      setMobileIndex((prev) => (prev + 1) % data[active].length);
+    }, 6000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isMobile, paused, active]);
+
+  /* resume after hold / scroll */
+  const resumeAuto = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      setPaused(false);
+    }, 450);
+  };
+
+  const stopAuto = () => {
+    setPaused(true);
+
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+
   return (
-    <section
-      id="menu"
-      className="relative py-24 scroll-mt-24 lg:max-w-screen overflow-hidden"
-    >
-      {/* Left Decor */}
+    <section id="menu" className="relative overflow-hidden py-24">
+      {/* LEFT DECOR CHANGING */}
       <motion.div
-        style={{ x: leftX, opacity: opacity }}
-        animate={{ y: [0, 10, 0], rotate: [0, 4, 0] }}
-        transition={{ repeat: Infinity, duration: 6 }}
-        className="
-        absolute
-        left-5 top-28
-        sm:left-0 sm:top-24
-        md:left-2 md:top-24
-        lg:left-0 lg:top-32
-        z-0"
+        key={`left-${active}`}
+        style={{ x: leftX, opacity }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: [0, 10, 0],
+          rotate: [0, 4, 0],
+        }}
+        transition={{
+          duration: 0.35,
+          y: { repeat: Infinity, duration: 6 },
+          rotate: { repeat: Infinity, duration: 6 },
+        }}
+        className="absolute top-0 -left-20 md:left-5 md:top-28 z-0"
       >
         <Image
-          src="/assets/dcr1.svg"
+          src={decor.left}
           alt=""
           width={180}
           height={180}
-          className="
-        w-14
-        sm:w-16
-        md:w-20
-        lg:w-28
-        xl:w-36
-        opacity-50 lg:opacity-70"
+          className="w-35 md:w-35 opacity-80"
         />
       </motion.div>
 
-      {/* Right Decor */}
+      {/* RIGHT DECOR CHANGING */}
       <motion.div
-        style={{ x: rightX, opacity: opacity }}
-        animate={{ y: [0, -10, 0], rotate: [0, -4, 0] }}
-        transition={{ repeat: Infinity, duration: 5 }}
+        key={`right-${active}`}
+        style={{ x: rightX, opacity }}
+        initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: [0, -10, 0],
+          rotate: [0, -4, 0],
+        }}
+        transition={{
+          duration: 0.35,
+          y: {
+            repeat: Infinity,
+            duration: 5,
+            ease: "easeInOut",
+          },
+          rotate: {
+            repeat: Infinity,
+            duration: 5,
+            ease: "easeInOut",
+          },
+        }}
         className="absolute -right-10 bottom-34 hidden lg:block"
       >
         <Image
-          src="/assets/dcr2.svg"
+          src={decor.right}
           alt=""
           width={280}
           height={280}
-          className="w-44 xl:w-32 opacity-80"
+          className="w-44 md:w-35 opacity-80"
         />
       </motion.div>
+
       <div className="relative mx-auto max-w-7xl px-6">
         {/* Heading */}
         <div className="text-center">
@@ -195,50 +264,93 @@ export default function MenuSection() {
           ))}
         </div>
 
-        {/* Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.35 }}
-            className="mt-16 grid gap-10 md:grid-cols-3"
-          >
-            {data[active].map((item) => (
-              <div
-                key={item.name}
-                className="group text-center transition-all duration-300"
+        {/* MENU CONTENT */}
+        {isMobile ? (
+          <div className="mt-14 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${active}-${mobileIndex}`}
+                initial={{ opacity: 0, scale: 0.75, x: -40 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.8, x: 40 }}
+                transition={{ duration: 0.45 }}
+                onTouchStart={stopAuto}
+                onTouchEnd={resumeAuto}
+                onMouseDown={stopAuto}
+                onMouseUp={resumeAuto}
+                className="mx-auto max-w-xs text-center"
               >
-                {/* Image */}
-                <div className="relative mx-auto aspect-square w-full max-w-55">
+                <div className="relative mx-auto aspect-square w-full max-w-56">
                   <Image
-                    src={item.image}
-                    alt={item.name}
+                    src={data[active][mobileIndex].image}
+                    alt={data[active][mobileIndex].name}
                     fill
-                    className="object-contain transition duration-500 group-hover:scale-105"
+                    className="object-contain"
                   />
                 </div>
 
-                {/* Title */}
-                <h3 className="mt-6 text-2xl font-semibold">{item.name}</h3>
+                <h3 className="mt-6 text-2xl font-semibold">
+                  {data[active][mobileIndex].name}
+                </h3>
 
-                {/* Desc */}
-                <p
-                  className="
-                    mx-auto mt-3 max-w-xs text-sm leading-7 text-neutral-600
-                    overflow-hidden
-                    max-h-none
-                    lg:max-h-21
-                    lg:group-hover:max-h-40
-                    transition-all duration-500 ease-in-out"
-                >
-                  {item.desc}
+                <p className="mx-auto mt-3 max-w-xs text-sm leading-7 text-neutral-600">
+                  {data[active][mobileIndex].desc}
                 </p>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* INDICATOR FIXED */}
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2">
+                {data[active].map((_, i) => (
+                  <motion.span
+                    key={i}
+                    animate={{
+                      width: mobileIndex === i ? 22 : 8,
+                      opacity: mobileIndex === i ? 1 : 0.35,
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="h-2 rounded-full bg-black"
+                  />
+                ))}
               </div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+
+              <p className="text-[11px] uppercase tracking-[0.25em] text-neutral-400">
+                Hold to pause
+              </p>
+            </div>
+          </div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.35 }}
+              className="mt-16 grid gap-10 md:grid-cols-3"
+            >
+              {data[active].map((item) => (
+                <div key={item.name} className="group text-center">
+                  <div className="relative mx-auto aspect-square w-full max-w-55">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-contain transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <h3 className="mt-6 text-2xl font-semibold">{item.name}</h3>
+
+                  <p className="mx-auto mt-3 max-w-xs text-sm leading-7 text-neutral-600">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        )}
       </div>
     </section>
   );

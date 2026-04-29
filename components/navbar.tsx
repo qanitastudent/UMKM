@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import {
@@ -14,7 +13,18 @@ import { Menu } from "lucide-react";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
 
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      window.history.replaceState(null, "", "/");
+    }
+  };
   const navLink =
     "relative inline-block after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100";
 
@@ -40,19 +50,38 @@ export default function Navbar() {
           PastaHouse
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <a href="#hero" className={navLink}>
+          <button onClick={() => scrollToSection("hero")} className={navLink}>
             Home
-          </a>
-          <a href="#menu" className={navLink}>
+          </button>
+
+          <button onClick={() => scrollToSection("menu")} className={navLink}>
             Menu
-          </a>
-          <a href="#testimonials" className={navLink}>
+          </button>
+
+          <button
+            onClick={() => scrollToSection("reviews")}
+            className={navLink}
+          >
             Reviews
-          </a>
+          </button>
           <motion.div whileHover={{ rotate: 1.08 }}>
-            <Button className="rounded-full px-6 py-5 bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/20">
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="rounded-full
+                px-3 py-2
+                bg-orange-500
+                text-white
+                font-medium
+                tracking-wide
+                shadow-lg shadow-orange-500/25
+                transition-all duration-300
+                hover:bg-orange-600
+                hover:shadow-xl hover:shadow-orange-500/35
+                border border-white/20
+                backdrop-blur-sm"
+            >
               Contact
-            </Button>
+            </button>
           </motion.div>
         </nav>
 
@@ -69,20 +98,20 @@ export default function Navbar() {
               align="end"
               className="w-52 rounded-2xl mt-3 p-2 bg-accent-foreground"
             >
-              <DropdownMenuItem>
-                <a href="#hero">Home</a>
+              <DropdownMenuItem onClick={() => scrollToSection("hero")}>
+                <a>Home</a>
               </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                <a href="#menu">Menu</a>
+              <DropdownMenuItem onClick={() => scrollToSection("menu")}>
+                <a>Menu</a>
               </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                <a href="#reviews">Reviews</a>
+              <DropdownMenuItem onClick={() => scrollToSection("reviews")}>
+                <a>Reviews</a>
               </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                <a href="#footer">Contact</a>
+              <DropdownMenuItem onClick={() => scrollToSection("contact")}>
+                <a>Contact</a>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

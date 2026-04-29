@@ -13,23 +13,102 @@ const socials = [
 
 export default function FooterSection() {
   return (
-    <section className="relative overflow-hidden bg-[#f8f5ef] py-20 md:py-24">
+    <section
+      id="footer"
+      className="relative overflow-x-hidden overflow-y-visible bg-[#f8f5ef] pt-36 pb-5 md:pt-28 md:pb-5"
+    >
       <div className="relative mx-auto max-w-7xl px-6">
-        {/* ===================== */}
+        {/* BACKGROUND SMALL DECOR */}
+        {/* garlic top center */}
+        <motion.div
+          animate={{ y: [0, -10, 0], rotate: [0, -6, 0] }}
+          transition={{ repeat: Infinity, duration: 6 }}
+          className="pointer-events-none absolute left-[42%] top-6 z-0 opacity-80"
+        >
+          <Image
+            src="/assets/celery.svg"
+            alt=""
+            width={70}
+            height={70}
+            className="w-12 md:w-25"
+          />
+        </motion.div>
+
+        {/* basil mid left */}
+        <motion.div
+          animate={{ x: [0, 10, 0], y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 5.8 }}
+          className="pointer-events-none absolute left-8 top-1/2 z-0 opacity-85"
+        >
+          <Image
+            src="/assets/parsley.svg"
+            alt=""
+            width={70}
+            height={70}
+            className="w-12 md:w-25"
+          />
+        </motion.div>
+
+        {/* chili bottom left */}
+        <motion.div
+          animate={{ y: [0, -12, 0], rotate: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 7 }}
+          className="pointer-events-none absolute left-14 bottom-14 z-0 opacity-80"
+        >
+          <Image
+            src="/assets/chili.svg"
+            alt=""
+            width={90}
+            height={90}
+            className="w-14 md:w-20"
+          />
+        </motion.div>
+
+        {/* garlic bottom right */}
+        <motion.div
+          animate={{ y: [0, 10, 0], rotate: [0, -7, 0] }}
+          transition={{ repeat: Infinity, duration: 6.5 }}
+          className="pointer-events-none absolute right-0 bottom-18 z-0 opacity-75"
+        >
+          <Image
+            src="/assets/garlic.svg"
+            alt=""
+            width={60}
+            height={60}
+            className="w-10 md:w-80"
+          />
+        </motion.div>
+
         {/* RIGHT MAIN DECOR */}
-        {/* ===================== */}
         <motion.div
           animate={{ y: [0, -18, 0], rotate: [0, -4, 0] }}
           transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-          className="pointer-events-none absolute right-[-40px] top-1/2 z-0 w-[220px] -translate-y-1/2 opacity-90 md:right-[-20px] md:w-[320px] lg:right-0 lg:w-[420px]"
+          className="
+          pointer-events-none absolute z-0 opacity-95
+          -right-22.5 top-[58%]
+          sm:-right-27.5 sm:top-[56%]
+          md:-right-22.5 md:top-1/2
+          lg:right-20 lg:top-1/2
+          -translate-y-1/2
+          w-85
+          sm:w-105
+          md:w-150
+          lg:w-130
+          "
         >
-          <Image
-            src="/assets/Lasagna.svg"
-            alt=""
-            width={420}
-            height={420}
-            className="h-auto w-full object-contain drop-shadow-2xl"
-          />
+          <div className="relative aspect-square w-full">
+            <Image
+              src="/assets/Lasagna.svg"
+              alt=""
+              fill
+              sizes="(max-width:640px) 340px,
+              (max-width:768px) 420px,
+              (max-width:1024px) 520px,
+              (max-width:1280px) 620px,
+              700px"
+              className="object-contain drop-shadow-2xl"
+            />
+          </div>
         </motion.div>
 
         {/* floating parsley */}
@@ -62,9 +141,7 @@ export default function FooterSection() {
           />
         </motion.div>
 
-        {/* ===================== */}
         {/* CONTENT */}
-        {/* ===================== */}
         <div className="relative z-10 grid items-center gap-14 md:grid-cols-2">
           {/* LEFT CONTENT */}
           <div className="max-w-xl">
