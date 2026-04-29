@@ -189,14 +189,14 @@ export default function MenuSection() {
           y: { repeat: Infinity, duration: 6 },
           rotate: { repeat: Infinity, duration: 6 },
         }}
-        className="absolute top-0 -left-20 md:left-5 md:top-28 z-0"
+        className="absolute top-10 -left-20 md:left-15 md:top-28 z-0"
       >
         <Image
           src={decor.left}
           alt=""
           width={180}
           height={180}
-          className="w-35 md:w-35 opacity-80"
+          className="w-35 md:w-35 md:opacity-80 opacity-60"
         />
       </motion.div>
 

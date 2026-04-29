@@ -78,7 +78,7 @@ export default function ContactSection() {
           style={{ x: leftX, opacity }}
           animate={{ y: [0, 12, 0], rotate: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 6 }}
-          className="pointer-events-none absolute -left-14 top-8 z-0"
+          className="pointer-events-none absolute left-0 top-16 z-0"
         >
           <Image
             src="/assets/butter.svg"

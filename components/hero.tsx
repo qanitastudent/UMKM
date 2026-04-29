@@ -9,6 +9,19 @@ export default function HeroSection() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
 
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      window.history.replaceState(null, "", "/");
+    }
+  };
+
   useEffect(() => {
     const check = () => {
       setIsMobile(window.innerWidth < 768);
@@ -134,7 +147,10 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button className="rounded-full bg-orange-500 px-8 py-6 text-white hover:bg-orange-600">
+            <Button
+              className="rounded-full bg-orange-500 px-8 py-6 text-white hover:bg-orange-600"
+              onClick={() => scrollToSection("menu")}
+            >
               Explore Menu
             </Button>
           </div>
