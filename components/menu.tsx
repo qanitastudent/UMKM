@@ -83,7 +83,7 @@ const decorMap = {
 
 export default function MenuSection() {
   type Category = "pasta" | "dessert" | "drink";
-
+  const [direction, setDirection] = useState(0); // -1 = kanan, 1 = kiri
   const [active, setActive] = useState<Category>("pasta");
 
   const tabs: { key: Category; label: string }[] = [
@@ -270,14 +270,43 @@ export default function MenuSection() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={`${active}-${mobileIndex}`}
-                initial={{ opacity: 0, scale: 0.75, x: -40 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.8, x: 40 }}
-                transition={{ duration: 0.45 }}
-                onTouchStart={stopAuto}
-                onTouchEnd={resumeAuto}
-                onMouseDown={stopAuto}
-                onMouseUp={resumeAuto}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragStart={stopAuto}
+                onDragEnd={(e, info) => {
+                  resumeAuto();
+
+                  if (info.velocity.x < -500 || info.offset.x < -80) {
+                    setDirection(1); // geser ke kiri → konten baru dari kanan
+                    setMobileIndex((prev) => (prev + 1) % data[active].length);
+                  } else if (info.offset.x > 80) {
+                    setDirection(-1); // geser ke kanan → konten baru dari kiri
+                    setMobileIndex(
+                      (prev) =>
+                        (prev - 1 + data[active].length) % data[active].length,
+                    );
+                  }
+                }}
+                initial={{
+                  opacity: 0,
+                  scale: 0.75,
+                  x: direction === 1 ? 80 : -80,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  x: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.8,
+                  x: direction === 1 ? -80 : 80,
+                }}
+                transition={{
+                  duration: 0.45,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="mx-auto max-w-xs text-center"
               >
                 <div className="relative mx-auto aspect-square w-full max-w-56">
