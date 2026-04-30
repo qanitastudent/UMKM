@@ -94,7 +94,7 @@ export default function ContactSection() {
           style={{ x: leftX, opacity }}
           animate={{ y: [0, -10, 0], rotate: [0, -8, 0] }}
           transition={{ repeat: Infinity, duration: 6.4 }}
-          className="pointer-events-none absolute -left-16 bottom-12 z-0"
+          className="pointer-events-none absolute -left-8 bottom-0 md:-left-16 md:bottom-12 z-0"
         >
           <Image
             src="/assets/cinnamon.svg"
@@ -110,7 +110,7 @@ export default function ContactSection() {
           style={{ x: rightX, opacity }}
           animate={{ y: [0, -12, 0], rotate: [0, -8, 0] }}
           transition={{ repeat: Infinity, duration: 5.2 }}
-          className="pointer-events-none absolute -right-12 top-10 z-0"
+          className="pointer-events-none absolute -right-8 top-10 md:-right-12 md:top-10 z-0"
         >
           <Image
             src="/assets/caramel.svg"
