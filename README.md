@@ -1,27 +1,27 @@
 # UMKM Landing Page Template
 
-Landing Page Template merupakan website berbasis Next.js yang dirancang sebagai media promosi digital untuk UMKM. Website ini berfungsi untuk menampilkan informasi usaha secara sederhana, mempermudah pengguna menemukan kanal media sosial, serta menyediakan area feedback sebagai bentuk interaksi awal dengan calon pelanggan.
+Landing Page Template merupakan website berbasis Next.js yang dirancang sebagai media promosi digital untuk UMKM. Website ini berfokus pada penyampaian informasi secara sederhana, pengalaman pengguna yang nyaman, dan tampilan responsif pada berbagai perangkat.
 
-Project ini dibuat sebagai template dan belum terintegrasi dengan sistem backend.
+Website ini bersifat template dan belum terintegrasi dengan backend.
 
 ---
 
 ## Overview
 
-Tujuan utama project ini adalah membuat tampilan landing page yang menarik, ringan, dan nyaman digunakan pada perangkat desktop maupun mobile.
+Project ini dikembangkan untuk membantu UMKM memiliki halaman promosi digital yang modern dan mudah diakses.
 
-Website difokuskan untuk:
+Fokus utama pengembangan:
 
-- Menampilkan informasi UMKM secara sederhana
-- Menjadi media promosi digital
-- Mengarahkan pengguna ke media sosial
-- Menyediakan simulasi alur feedback pelanggan
+- Tampilan responsif
+- Navigasi sederhana
+- Pengalaman pengguna yang nyaman
+- Transisi visual yang halus
 
 ---
 
 ## Preview
 
-![Homepage](./public/assets/sections.png)
+![Homepage](/docs/desktop-view.png)
 
 ---
 
@@ -33,6 +33,14 @@ Frontend:
 - React
 - TypeScript
 
+Styling:
+
+- Tailwind CSS
+
+Animation:
+
+- Framer Motion
+
 Deployment:
 
 - Vercel
@@ -41,23 +49,22 @@ Deployment:
 
 ## Features
 
-- Responsive landing page
+- Single-page landing page
+- 5 section utama
+- Responsive untuk desktop dan mobile
 - Navigasi antar section menggunakan button
-- Social media redirect button
+- Integrasi tombol media sosial
 - Form feedback (dummy)
-- Optimasi tampilan untuk desktop dan mobile
+- Animasi transisi menggunakan Framer Motion
 
 ---
 
 ## Project Structure
 
-/app
-
-/components
-
-/lib
-
-/public
+app/
+components/
+lib/
+public/
 
 ---
 
@@ -67,11 +74,11 @@ Clone repository:
 
 git clone [repository-url]
 
-Install dependencies:
+Install dependency:
 
 npm install
 
-Run development server:
+Run:
 
 npm run dev
 
@@ -85,20 +92,32 @@ http://localhost:3000
 
 Melalui project ini saya mempelajari:
 
-- Membangun landing page menggunakan Next.js
-- Mendesain pengalaman pengguna yang nyaman pada berbagai ukuran layar
-- Mengelola struktur komponen frontend
-- Menyusun navigasi sederhana untuk meningkatkan pengalaman pengguna
+- Mengembangkan landing page menggunakan Next.js
+- Menggunakan Tailwind CSS untuk membangun tampilan responsif
+- Mengimplementasikan animasi menggunakan Framer Motion
+- Menyusun pengalaman pengguna yang nyaman pada desktop dan mobile
 - Melakukan deployment menggunakan Vercel
+
+---
+
+## Current Limitations
+
+Project saat ini masih memiliki beberapa batasan:
+
+- Belum menggunakan backend
+- Form belum terhubung ke penyimpanan data
+- Belum tersedia dark mode
+- Belum memiliki loading state
+- Masih menggunakan struktur single-page
 
 ---
 
 ## Future Improvements
 
 - Integrasi backend untuk form feedback
-- Dashboard admin untuk pengelolaan konten
 - Penyimpanan data feedback
-- Analitik interaksi pengguna
+- Penambahan loading state
+- Refactor menjadi reusable components
 
 ---
 
