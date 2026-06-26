@@ -21,11 +21,7 @@ Website difokuskan untuk:
 
 ## Preview
 
-Tambahkan screenshot hasil website.
-
-Contoh:
-
-![Homepage](./docs/homepage.png)
+![Homepage](./public/assets/sections.png)
 
 ---
 
