@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UMKM Landing Page Template
 
-## Getting Started
+Landing Page Template merupakan website berbasis Next.js yang dirancang sebagai media promosi digital untuk UMKM. Website ini berfungsi untuk menampilkan informasi usaha secara sederhana, mempermudah pengguna menemukan kanal media sosial, serta menyediakan area feedback sebagai bentuk interaksi awal dengan calon pelanggan.
 
-First, run the development server:
+Project ini dibuat sebagai template dan belum terintegrasi dengan sistem backend.
 
-```bash
+---
+
+## Overview
+
+Tujuan utama project ini adalah membuat tampilan landing page yang menarik, ringan, dan nyaman digunakan pada perangkat desktop maupun mobile.
+
+Website difokuskan untuk:
+
+- Menampilkan informasi UMKM secara sederhana
+- Menjadi media promosi digital
+- Mengarahkan pengguna ke media sosial
+- Menyediakan simulasi alur feedback pelanggan
+
+---
+
+## Preview
+
+Tambahkan screenshot hasil website.
+
+Contoh:
+
+![Homepage](./docs/homepage.png)
+
+---
+
+## Tech Stack
+
+Frontend:
+
+- Next.js
+- React
+- TypeScript
+
+Deployment:
+
+- Vercel
+
+---
+
+## Features
+
+- Responsive landing page
+- Navigasi antar section menggunakan button
+- Social media redirect button
+- Form feedback (dummy)
+- Optimasi tampilan untuk desktop dan mobile
+
+---
+
+## Project Structure
+
+/app
+
+/components
+
+/lib
+
+/public
+
+---
+
+## Installation
+
+Clone repository:
+
+git clone [repository-url]
+
+Install dependencies:
+
+npm install
+
+Run development server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## What I Learned
 
-To learn more about Next.js, take a look at the following resources:
+Melalui project ini saya mempelajari:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Membangun landing page menggunakan Next.js
+- Mendesain pengalaman pengguna yang nyaman pada berbagai ukuran layar
+- Mengelola struktur komponen frontend
+- Menyusun navigasi sederhana untuk meningkatkan pengalaman pengguna
+- Melakukan deployment menggunakan Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Future Improvements
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Integrasi backend untuk form feedback
+- Dashboard admin untuk pengelolaan konten
+- Penyimpanan data feedback
+- Analitik interaksi pengguna
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Author
+
+Ayu Qanita Putri
